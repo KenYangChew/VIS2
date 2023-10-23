@@ -4,12 +4,12 @@
   "padding": 5,
   "width": 800,
   "height": 400,
-  "title": {"text": "GDP Sector", "frame": "group"},
+  "title": {"text": "Inflation", "frame": "group"},
   "style": "view",
   "data": [
     {
       "name": "source_1",
-      "url": "https://raw.githubusercontent.com/KenYangChew/FIT3179_w9_hw/main/data/ListofCountriesbyGDPSectorComposition.csv",
+      "url": "https://raw.githubusercontent.com/KenYangChew/VIS2/main/data/Country-data.csv",
       "format": {"type": "csv", "delimiter": ","}
     },
     {
@@ -29,14 +29,14 @@
         {
           "type": "lookup",
           "from": "source_1",
-          "key": "Country/Economy",
+          "key": "country",
           "fields": ["properties.NAME"],
-          "values": ["Industry"]
+          "values": ["inflation"]
         },
-        {"type": "formula", "expr": "datum.Industry + 0.1", "as": "Industry"},
+        {"type": "formula", "expr": "datum.inflation + 0.1", "as": "inflation"},
         {
           "type": "filter",
-          "expr": "isValid(datum[\"Industry\"]) && isFinite(+datum[\"Industry\"])"
+          "expr": "isValid(datum[\"inflation\"]) && isFinite(+datum[\"inflation\"])"
         }
       ]
     }
@@ -57,13 +57,13 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": {"scale": "color", "field": "Industry"},
+          "fill": {"scale": "color", "field": "inflation"},
           "tooltip": {
-            "signal": "{\"Country/Economy\": isValid(datum[\"properties.NAME\"]) ? datum[\"properties.NAME\"] : \"\"+datum[\"properties.NAME\"], \"Industry\": format(datum[\"Industry\"], \"\")}"
+            "signal": "{\"country\": isValid(datum[\"properties.NAME\"]) ? datum[\"properties.NAME\"] : \"\"+datum[\"properties.NAME\"], \"Industry\": format(datum[\"inflation\"], \"\")}"
           },
           "ariaRoleDescription": {"value": "geoshape"},
           "description": {
-            "signal": "\"Industry: \" + (format(datum[\"Industry\"], \"\")) + \"; Country/Economy: \" + (isValid(datum[\"properties.NAME\"]) ? datum[\"properties.NAME\"] : \"\"+datum[\"properties.NAME\"])"
+            "signal": "\"iInflation: \" + (format(datum[\"inflation\"], \"\")) + \"; country: \" + (isValid(datum[\"properties.NAME\"]) ? datum[\"properties.NAME\"] : \"\"+datum[\"properties.NAME\"])"
           }
         }
       },
@@ -74,7 +74,7 @@
     {
       "name": "color",
       "type": "log",
-      "domain": {"data": "source_0", "field": "Industry"},
+      "domain": {"data": "source_0", "field": "inflation"},
       "range": "heatmap",
       "interpolate": "hcl"
     }
@@ -84,7 +84,7 @@
       "fill": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "labelOverlap": "greedy",
-      "title": "Industry"
+      "title": "Inflation"
     }
   ],
   "config": {}
