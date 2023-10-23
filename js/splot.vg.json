@@ -1,0 +1,69 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "Total Fer vs Exports",
+  "width": 800,
+  "height": 600,
+  "description": "A scatterplot showing the amount of internet users and population in countries.",
+  "data": {
+      "url": "https://raw.githubusercontent.com/KenYangChew/VIS2/main/data/Country-data.csv"
+  },
+  "params": [
+      {
+          "name": "Expec_Above",
+          "value": "0",
+          "bind": {
+              "input": "range",
+              "min": 0,
+              "max": 80,
+              "step": 1,
+              "name": "Minium Life Expec"
+          }
+      }
+  ],
+  "transform": [
+      {"filter": "datum.life_expec  > 0"},
+      {"filter": "datum.child_mort > 0"},
+      {"filter": "datum.life_expec > Expec_Above"}
+  ],
+  "mark": "point",
+  "encoding": {
+      "x": {
+          "field": "life_expec",
+          "type": "quantitative",
+          "axis": {"tickCount": 7},
+          "scale": {
+              "type": "log",
+              "domain": [
+                  1,
+                  100
+              ]
+          }
+      },
+      "y": {
+          "field": "child_mort",
+          "type": "quantitative",
+          "axis": {"tickCount": 7},
+          "scale": {
+              "type": "log",
+              "domain": [
+                  1,
+                  300
+              ]
+          }
+      },
+      "tooltip": [
+          {
+              "field": "country",
+              "type": "nominal"
+          },
+          {
+              "field": "child_mort",
+              "type": "quantitative"
+          },
+          {
+              "field": "life_expec",
+              "type": "quantitative"
+          }
+      ]
+  }
+}
